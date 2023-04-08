@@ -1,5 +1,6 @@
 import React from "react";
 import testImg from "../assets/testImg.png";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
@@ -17,9 +18,11 @@ export default function HeroSection() {
             unde facilis tempore ex pariatur deleniti?
           </p>
           <div className="py-4">
-            <button className="bg-gray-700 px-4 py-2 text-white rounded-md">
-              Get Started
-            </button>
+            <Link to="/createQuiz">
+              <button className="bg-gray-700 px-4 py-2 text-white rounded-md">
+                Get Started
+              </button>
+            </Link>
           </div>
         </div>
       </div>

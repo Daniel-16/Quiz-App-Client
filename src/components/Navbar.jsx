@@ -17,27 +17,27 @@ export default function Navbar() {
                   <div className="flex space-x-4">
                     <a
                       href="#"
-                      className="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      className="text-black hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Home
                     </a>
                     <a
                       href="#"
-                      className="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      className="text-black hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
                       About
                     </a>
                     <a
                       href="#"
-                      className="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      className="text-black hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
-                      Create Quiz
+                      Contact
                     </a>
                     <a
                       href="#"
-                      className="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      className="text-black hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
-                      Contact
+                      Get Started
                     </a>
                   </div>
                 </div>

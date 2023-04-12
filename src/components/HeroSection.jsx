@@ -17,7 +17,7 @@ export default function HeroSection() {
           </p>
           <div className="py-4">
             <Link to="/createQuiz">
-              <button className="bg-orange-400 px-4 py-2 text-white rounded-md transition ease-in-out delay-150">
+              <button className="bg-orange-500 px-4 py-2 text-white rounded-md transition ease-in-out delay-150">
                 Get Started
               </button>
             </Link>

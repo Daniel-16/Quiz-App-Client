@@ -4,6 +4,9 @@ import App from "./App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateQuiz from "./components/CreateQuiz";
+import Quizzes from "./components/Quizzes";
+import OpenQuiz from "./components/OpenQuiz";
+import CreateQuestions from "./components/CreateQuestions";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +16,18 @@ const router = createBrowserRouter([
   {
     path: "/createQuiz",
     element: <CreateQuiz />,
+  },
+  {
+    path: "/quizzes",
+    element: <Quizzes />,
+  },
+  {
+    path: "/quiz",
+    element: <OpenQuiz />,
+  },
+  {
+    path: "/createQuestions",
+    element: <CreateQuestions />,
   },
 ]);
 

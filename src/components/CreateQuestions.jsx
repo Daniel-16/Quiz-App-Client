@@ -1,168 +1,203 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import Axios from "axios";
 
-export default function CreateQuestions() {
+const CreateQuestions = () => {
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState([
-    { question: "", options: [""], correctAnswer: "" },
+    {
+      id: uuidv4(),
+      question: "",
+      options: [{ id: uuidv4(), option: "" }],
+      correctAnswer: "",
+    },
   ]);
 
-  const addQuestion = () => {
-    setQuestions([
-      ...questions,
-      { question: "", options: [""], correctAnswer: "" },
-    ]);
+  // const handleTitleChange = (event) => {
+  //   setTitle(event.target.value);
+  // };
+
+  // const handleDescriptionChange = (event) => {
+  //   setDescription(event.target.value);
+  // };
+
+  const handleQuestionChange = (questionIndex, event) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].question = event.target.value;
+    setQuestions(newQuestions);
   };
 
-  const removeQuestion = (index) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions.splice(index, 1);
-    setQuestions(updatedQuestions);
+  const handleOptionChange = (questionIndex, optionIndex, event) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options[optionIndex].option =
+      event.target.value;
+    setQuestions(newQuestions);
+  };
+
+  const handleCorrectAnswerChange = (questionIndex, event) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].correctAnswer = event.target.value;
+    setQuestions(newQuestions);
+  };
+
+  const addQuestion = () => {
+    const newQuestions = [...questions];
+    newQuestions.push({
+      id: uuidv4(),
+      question: "",
+      options: [{ id: uuidv4(), option: "" }],
+      correctAnswer: "",
+    });
+    setQuestions(newQuestions);
+  };
+
+  const removeQuestion = (questionIndex) => {
+    const newQuestions = [...questions];
+    newQuestions.splice(questionIndex, 1);
+    setQuestions(newQuestions);
   };
 
   const addOption = (questionIndex) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].options.push("");
-    setQuestions(updatedQuestions);
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options.push({ id: uuidv4(), option: "" });
+    setQuestions(newQuestions);
   };
 
   const removeOption = (questionIndex, optionIndex) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].options.splice(optionIndex, 1);
-    setQuestions(updatedQuestions);
-  };
-
-  const handleQuestionChange = (index, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[index].question = value;
-    setQuestions(updatedQuestions);
-  };
-
-  const handleOptionChange = (questionIndex, optionIndex, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].options[optionIndex] = value;
-    setQuestions(updatedQuestions);
-  };
-
-  const handleCorrectAnswerChange = (questionIndex, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].correctAnswer = value;
-    setQuestions(updatedQuestions);
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options.splice(optionIndex, 1);
+    setQuestions(newQuestions);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(questions);
+    const formQuestions = questions.map(
+      ({ question, options, correctAnswer }) => ({
+        prompt: question,
+        options: options.map(({ option }) => option),
+        answer: correctAnswer,
+      })
+    );
+    console.log(questions.map((question) => question.options));
+    // Axios.post(
+    //   `https://quiz-app-server-jcyq.onrender.com/api/createQuestions/${localStorage.getItem(
+    //     "quizId"
+    //   )}`,
+    //   {
+    //     prompt: questions.map(question => question)
+    //    }
+    // )
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-10">
-      {questions.map((question, questionIndex) => (
-        <div key={questionIndex} className="mb-4">
-          <label
-            htmlFor={`question-${questionIndex}`}
-            className="block mb-2 font-bold text-gray-700"
-          >
-            Question {questionIndex + 1}
-          </label>
-          <input
-            type="text"
-            id={`question-${questionIndex}`}
-            value={question.question}
-            onChange={(event) =>
-              handleQuestionChange(questionIndex, event.target.value)
-            }
-            placeholder="Enter your question here"
-            className="w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500"
-          />
-          <div className="mb-4">
-            <label
-              htmlFor={`correctAnswer-${questionIndex}`}
-              className="block mb-2 font-bold text-gray-700"
-            >
-              Correct Answer
-            </label>
-            <input
-              type="text"
-              id={`correctAnswer-${questionIndex}`}
-              value={question.correctAnswer}
-              onChange={(event) =>
-                handleCorrectAnswerChange(questionIndex, event.target.value)
-              }
-              placeholder="Enter the correct answer here"
-              className="w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor={`options-${questionIndex}`}
-              className="block mb-2 font-bold text-gray-700"
-            >
-              Options
-            </label>
-            <div className="flex flex-col gap-2">
-              {question.options.map((option, optionIndex) => (
-                <div key={optionIndex} className="flex items-center gap-2">
+    <div className="w-full max-w-3xl mx-auto my-8">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
+        {questions.map((question, questionIndex) => (
+          <div key={question.id} className="mb-6">
+            <div className="mb-4">
+              <label
+                htmlFor={`question-${questionIndex}`}
+                className="block text-gray-700 font-bold mb-2"
+              >
+                Question {questionIndex + 1}
+              </label>
+              <input
+                type="text"
+                id={`question-${questionIndex}`}
+                value={question.question}
+                onChange={(event) => handleQuestionChange(questionIndex, event)}
+                placeholder="Enter the question"
+                className="w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            {question.options.map((option, optionIndex) => (
+              <div key={option.id} className="mb-2">
+                <label
+                  htmlFor={`question-${questionIndex}-option-${optionIndex}`}
+                  className="flex items-center"
+                >
                   <input
                     type="radio"
-                    name={`option-${questionIndex}`}
-                    value={option}
-                    onChange={() =>
-                      handleOptionChange(questionIndex, optionIndex, option)
+                    id={`question-${questionIndex}-option-${optionIndex}`}
+                    name={`question-${questionIndex}`}
+                    value={option.option}
+                    onChange={(event) =>
+                      handleCorrectAnswerChange(questionIndex, event)
                     }
-                    className="text-blue-500"
+                    checked={question.correctAnswer === option.option}
+                    className="mr-2"
                   />
                   <input
                     type="text"
-                    value={option}
+                    id={`question-${questionIndex}-option-${optionIndex}`}
+                    value={option.option}
                     onChange={(event) =>
-                      handleOptionChange(
-                        questionIndex,
-                        optionIndex,
-                        event.target.value
-                      )
+                      handleOptionChange(questionIndex, optionIndex, event)
                     }
-                    placeholder={`Option ${optionIndex + 1}`}
+                    placeholder="Enter the option"
                     className="w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500"
                   />
-                  <button
-                    type="button"
-                    onClick={() => removeOption(questionIndex, optionIndex)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md focus:outline-none"
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
+                  {question.options.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeOption(questionIndex, optionIndex)}
+                      className="ml-2 text-red-600 hover:text-red-900"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </label>
+              </div>
+            ))}
+            {question.options.length < 6 && (
               <button
                 type="button"
                 onClick={() => addOption(questionIndex)}
-                className="bg-green-500 hover:bg-green-600 w-32 text-white px-2 py-1 rounded-md focus:outline-none"
+                className="text-sm text-blue-600 hover:text-blue-900 underline mb-2"
               >
-                + Add Option
+                Add option
               </button>
-            </div>
+            )}
+            {questions.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeQuestion(questionIndex)}
+                className="text-sm text-red-600 hover:text-red-900 underline mb-2 ml-2"
+              >
+                Remove question
+              </button>
+            )}
           </div>
+        ))}
+        <div className="flex items-center justify-between">
           <button
             type="button"
-            onClick={() => removeQuestion(questionIndex)}
-            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md focus:outline-none"
+            onClick={addQuestion}
+            className="text-sm text-blue-600 hover:text-blue-900 underline"
           >
-            Remove Question
+            Add question
+          </button>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Submit
           </button>
         </div>
-      ))}
-      <button
-        type="button"
-        onClick={addQuestion}
-        className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-md focus:outline-none mr-2"
-      >
-        Add Question
-      </button>
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md focus:outline-none"
-      >
-        Submit
-      </button>
-    </form>
+      </form>
+    </div>
   );
-}
+};
+
+export default CreateQuestions;
